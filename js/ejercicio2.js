@@ -12,73 +12,156 @@
 // permitiendo ingresar las propiedades mediante un formulario, también agregar los botones “mostrar generación”,
 //  es “mayor de edad” e indicar en un alert el resultado de la función correspondiente.
 class Persona {
-  constructor(nombre, edad, dni, sexo, peso, altura, anioDeNacimiento) {
+  constructor(nombre, edad, dni, sexo, peso, altura, anioNacimiento) {
     this.nombre = nombre;
     this.edad = edad;
     this.dni = dni;
     this.sexo = sexo;
     this.peso = peso;
     this.altura = altura;
-    this.anioDeNacimiento = anioDeNacimiento;
+    this.anioNacimiento = anioNacimiento;
+  }
+  mostrarDetalleGeneracion(generacion, marcoTemporal, historia, rasgo) {
+    return `<ul>
+      <li> Generación: ${generacion}</li>
+      <li> Marco temporal:  ${marcoTemporal} </li>
+      <li> Circunstancia histórica:  ${historia}</li>
+      <li> Rasgo característico: ${rasgo} </li>
+    </ul>
+    `;
+  }
+  mostrarGeneracion() {
+    if (this.anioNacimiento >= 1930 && this.anioNacimiento <= 1948) {
+      return this.mostrarDetalleGeneracion(
+        "Silent Generation",
+        "1930-1948",
+        "Conflictos bélicos",
+        "Austeridad 😐"
+      );
+    } else if (this.anioNacimiento >= 1949 && this.anioNacimiento <= 1968) {
+      return this.mostrarDetalleGeneracion(
+        "baby Boom",
+        "1949-1968",
+        "Paz y explosión demográfica",
+        "Ambicion 🤑"
+      );
+    } else if (this.anioNacimiento >= 1969 && this.anioNacimiento <= 1980) {
+      return this.mostrarDetalleGeneracion(
+        "Generación X",
+        "1969 - 1980",
+        "Crisis del 73 y transición española",
+        "Obsesión por el exito 😎"
+      );
+    } else if (this.anioNacimiento >= 1981 && this.anioNacimiento <= 1993) {
+      return this.mostrarDetalleGeneracion(
+        "Generación Y (Millenials)",
+        "1981 - 1993",
+        "Inicio de la digitalización",
+        "Frustración 😕"
+      );
+    } else if (this.anioNacimiento >= 1994 && this.anioNacimiento <= 2010) {
+      return this.mostrarDetalleGeneracion(
+        "Generación Z (Centennials)",
+        "1994 - 2010",
+        "Expansión masiva de internet",
+        "Irreverencia 😋"
+      );
+    } else if (this.anioNacimiento >= 2011) {
+      return this.mostrarDetalleGeneracion(
+        "Generación Alfa",
+        "2011 - Actualidad",
+        "Nativos Digitales al 100%",
+        "Son predilectos 😜"
+      );
+    } else {
+      return "<p>No se posee datos para la fecha seleccionada</p>";
+    }
   }
 
-  mostrarGeneracion() {
-    document.write(`
-      <ul> 
-      <h2>${this.nombre}</h2>
-      <li>Año de nacimiento: ${this.anioDeNacimiento}</li>  
-      <li>El rasgo caracteristico de esta generacion es </li>  
-      </ul>`);
-  }
   esMayorDeEdad() {
     if (this.edad >= 18) {
-      document.write(`
-      <ul> 
-      <h2>${this.nombre}</h2>
-      <li>Es mayor de edad ya que nacio en el año ${this.anioDeNacimiento} y tiene ${this.edad} años</li>  
-      </ul>`);
-    } else {
-      document.write(`
-        <ul> 
-        <h2>${this.nombre}</h2>
-        <li>No es mayor de edad ya que nacio en el año ${this.anioDeNacimiento} y tiene ${this.edad} años</li>  
-        </ul>`);
+      return `${this.nombre} es mayor de edad.<br>`;
     }
   }
   mostrarDatos() {
-    document.write(`<ul>
-      <h3>Datos Personales</h3>
-     <li>Nombre: ${this.nombre}</li>
-      <li>Edad: ${this.edad}</li>   
-      <li>Sexo: ${this.sexo}</li>   
-      <li>Peso: ${this.peso}</li>   
-      <li>Altura: ${this.altura}</li>   
-      <li>DNI: ${this.dni}</li>   
-      <li>Año de nacimiento: ${this.anioDeNacimiento}</li>   
-      </ul>`);
+    return `
+      <ul>
+      <li>Nombre: ${this.nombre}</li>
+      <li>Edad: ${this.edad}</li>
+      <li>DNI: ${this.dni}</li>
+      <li>Genero:  ${this.sexo === "H" ? "Hombre" : "Mujer"}</li>
+      <li>Peso: ${this.peso}</li>
+      <li>Altura: ${this.altura}</li>
+      <li>Año de nacimiento: ${this.anioNacimiento}</li>
+      <li>DNI Aleatorio generado: ${this.dni}</li>
+      </ul>
+      `;
+  }
+  generaDNI() {
+    let numRandom = Math.round(
+      Math.random() * (99999999 - 10000000) + parseInt(1)
+    );
+    this.nuevoDni = numRandom;
+  }
+
+  get mostrarNombre() {
+    return this.nombre;
   }
 }
 
-
 // agregar variables y llamar valores con queryselector
-let agregarNombre = document.querySelector("#inputAgregarNombre").value;
-console.log(agregarNombre.value);
-let agregarEdad = document.querySelector("#inputAgregarEdad").value;
-let agregarSexo = document.querySelector("#inputAgregarDni").value;
-let agregarDni = document.querySelector("#inputAgregarSexo").value;
-let agregarPeso = document.querySelector("#inputAgregarPeso").value;
-let agregarAltura = document.querySelector("#inputAgregarAltura").value;
-let agregarAnio = document.querySelector("#inputAgregarAnio").value;
+let nombre = document.getElementById("nombre");
+let edad = document.getElementById("edad");
+let dni = document.getElementById("dni");
+let genero = document.getElementById("genero");
+let peso = document.getElementById("peso");
+let altura = document.getElementById("altura");
+let anio = document.getElementById("fechaNacimiento");
+let formulario = document.getElementById("formGeneraciones");
+let alert = document.querySelector("#msjError");
+let btnmostrarDatos = document.querySelector("#mostrarDatos");
+let btnmostrarGeneracion = document.querySelector("#mostrarGeneracion");
+// sumar el formulario y luego hacer lo de abajo
+// aqui voy agregando los eventos
+formulario.addEventListener("submit", crearPersona);
+// agregar funcion flecha cuando hay que pasar parametro
+// asi se crea la persona
 
+function crearPersona(e) {
+  // la E es para dar tiempo a cargar datos y no recargar la pagina siempre que se presione el boton
 
-let Matias = new Persona(
-  agregarNombre.innerHTML = agregarNombre,
-  agregarEdad.innerHTML,
-  agregarDni.innerHTML,
-  agregarSexo.innerHTML,
-  agregarPeso.innerHTML,
-  agregarAltura.innerHTML,
-  agregarAnio.innerHTML
-);
+  e.preventDefault();
 
-Matias.mostrarDatos();
+  console.log("tengo que crear la persona");
+  //hay que ocultar el alert
+
+  const nuevaPersona = new Persona(
+    nombre.value,
+    edad.value,
+    dni.value,
+    genero.value,
+    peso.value,
+    altura.value,
+    anio.value
+  );
+  //reseteo los datos del formulario
+  formGeneraciones.reset();
+  // mostramos opciones para la persona creada
+  let datosExtras = document.querySelector("#datosExtras");
+  datosExtras.className = "container bg-light my-4 rounded-3";
+  // agregar el nombre de la persona en la seccion de detalle
+  datosExtras.children[0].children[0].innerHTML = `<i class="bi bi-person-badge"></i> Persona: ${nuevaPersona.mostrarNombre}`;
+  // opciones para agregar un manejador de eventos en un boton
+  btnmostrarDatos.addEventListener("click", () =>
+    mostrarDatosPersona(nuevaPersona)
+  );
+  btnmostrarGeneracion.addEventListener("click", () => {
+    let panelDatos = document.querySelector("#detalle");
+    panelDatos.innerHTML = nuevaPersona.mostrarGeneracion();
+  });
+}
+
+function mostrarDatosPersona(persona) {
+  let panelDatos = document.querySelector("#detalle");
+  panelDatos.innerHTML = persona.mostrarDatos();
+}
